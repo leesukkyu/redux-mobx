@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from "./store/actions";
+import {
+  addCounter,
+  addTodo,
+  completeTodo,
+  setVisibilityFilter,
+  VisibilityFilters
+} from "./store/actions";
 import AddTodo from "./AddTodo";
 import TodoList from "./TodoList";
 import Footer from "./Footer";
@@ -8,26 +14,25 @@ import { PropTypes } from "prop-types";
 class App extends Component {
   render() {
     // connect() 호출을 통해 주입됨:
-    const { dispatch, visibleTodos, visibilityFilter } = this.props;
+    console.log(this.props);
+    const { dispatch, visibleTodos, visibilityFilter, counter } = this.props;
     return (
       <div>
-        <AddTodo onAddClick={text => dispatch(addTodo(text))} />
-        <TodoList todos={visibleTodos} onTodoClick={index => dispatch(completeTodo(index))} />
-        <Footer filter={visibilityFilter} onFilterChange={nextFilter => dispatch(setVisibilityFilter(nextFilter))} />
+        dd
+        {counter}
+        <button
+          onClick={() => {
+            console.log('xx');
+            dispatch(addCounter())
+          }}
+        >
+          ++
+        </button>
       </div>
     );
   }
 }
 
-App.propTypes = {
-  visibleTodos: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      completed: PropTypes.bool.isRequired
-    })
-  ),
-  visibilityFilter: PropTypes.oneOf(["SHOW_ALL", "SHOW_COMPLETED", "SHOW_ACTIVE"]).isRequired
-};
 
 function selectTodos(todos, filter) {
   switch (filter) {
@@ -43,9 +48,11 @@ function selectTodos(todos, filter) {
 // 주어진 전역 상태에서 어떤 props를 주입하기를 원하나요?
 // 노트: 더 나은 성능을 위해서는 https://github.com/faassen/reselect 를 사용하세요
 function select(state) {
+  console.log(state);
   return {
     visibleTodos: selectTodos(state.todos, state.visibilityFilter),
-    visibilityFilter: state.visibilityFilter
+    visibilityFilter: state.visibilityFilter,
+    counter: state.counter
   };
 }
 

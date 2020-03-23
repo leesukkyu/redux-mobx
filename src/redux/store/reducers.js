@@ -1,5 +1,11 @@
 import { combineReducers } from "redux";
-import { ADD_TODO, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters } from "./actions";
+import {
+  ADD_TODO,
+  COMPLETE_TODO,
+  SET_VISIBILITY_FILTER,
+  VisibilityFilters,
+  ADD
+} from "./actions";
 const { SHOW_ALL } = VisibilityFilters;
 let count = 0;
 function visibilityFilter(state = SHOW_ALL, action) {
@@ -89,9 +95,21 @@ function todos(state = blogPosts, action) {
   }
 }
 
+let countState = 0;
+function counter(state = countState, action) {
+  console.log('xxxxx');
+  switch (action.type) {
+    case ADD:
+      return 1;
+    default:
+      return state;
+  }
+}
+
 const todoApp = combineReducers({
   visibilityFilter,
-  todos
+  todos,
+  counter
 });
 
 export default todoApp;
